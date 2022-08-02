@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -21,8 +20,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Autowired
 	private AuthenticationManager authenticationManager;
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
 	
 	@Autowired
 	private UserDetailsService userDetailsService;	
@@ -30,19 +27,21 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 		clients.inMemory()
-				.withClient("angular")
-				.secret(passwordEncoder.encode("@ngul@r0")) // @ngul@r0
-				.scopes("read", "write")
-				.authorizedGrantTypes("password", "refresh_token")
-				.accessTokenValiditySeconds(20)
-				.refreshTokenValiditySeconds(3600 * 24)
-			.and()
+					.withClient("angular")
+					.secret("$2a$10$WvQKdVeVXFbg4HWGizZnAuPBPObxA0VsToun6OAI/cEivLCl08pje") // @ngul@r0
+					.scopes("read", "write")
+					.authorizedGrantTypes("password", "refresh_token")
+					.accessTokenValiditySeconds(1800)
+					.refreshTokenValiditySeconds(3600 * 24)
+				.and()
 				.withClient("mobile")
-				.secret(passwordEncoder.encode("m0b1l30")) // m0b1l30
+				.secret("$2a$10$5w84rzsqE9RyCB2ngdPKDuh6NIo5b/mJPnBJtUyOUa5MfZR3rvfgW") // @ngul@r0
 				.scopes("read")
 				.authorizedGrantTypes("password", "refresh_token")
-				.accessTokenValiditySeconds(20)
-				.refreshTokenValiditySeconds(3600 * 24);
+				.accessTokenValiditySeconds(1800)
+				.refreshTokenValiditySeconds(3600 * 24)
+				;
+			
 				
 	}
 
